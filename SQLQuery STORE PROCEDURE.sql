@@ -1,0 +1,98 @@
+insert into customer(customerkey,name,dateofbirth,emailaddress,profession,tax) values(01,'sara','12-06-2013','sara.@gmail.com','teacher',250);
+
+alter table [student]
+alter column smarks int;
+
+CREATE TABLE Employee(
+Id int,
+Name VARCHAR(100),
+Designation VARCHAR(100)
+)
+bulk insert Employee from 'C:\sql reports\bulkinsert.txt'
+with (FIELDTERMINATOR = ',',ROWTERMINATOR = '\n');
+
+select * from Employee;
+
+
+backup database AdventureWorksDW2019 to disk = 'AdventureWorksDW2019dup3.bak'
+
+backup database AdventureWorksDW2019 to disk = 'C:\sql reports\AdventureWorksDW2019dup3.bak'
+
+create table student1 (id int,
+                  name varchar(50),
+				  marks int,
+				  email varchar(65));
+
+bulk insert student from 'C:\sql reports\bulkinsert1.txt'
+with(FIELDTERMINATOR = ',',ROWTERMINATOR = '\n');
+
+select * from student;
+
+
+
+
+
+-----## OUTPUTPARAMETER
+
+CREATE PROCEDURE SPTOTALCOUNT2
+@TOTALCOUNT INT OUT
+AS
+BEGIN
+SELECT @TOTALCOUNT = COUNT(ID) FROM STUDENT;
+END
+
+DECLARE @TOTAL INT
+EXECUTE SPTOTALCOUNT2 @TOTAL OUT
+PRINT @TOTAL
+
+
+
+---INPUT PARAMETER
+CREATE PROCEDURE SPTOTALMARKS3
+@NAME NVARCHAR(20)
+
+AS
+BEGIN
+SELECT * FROM STUDENT WHERE NAME = @NAME ;
+END
+
+SPTOTALMARKS3  'TOM'
+
+----OUTPUTPARAMETER WITH RETURN
+
+CREATE PROCEDURE SPRETURNSTUDENTCOUNT
+AS
+BEGIN
+RETURN(SELECT COUNT (ID) FROM STUDENT)
+END
+
+DECLARE @TOTALCOUNT INT
+EXECUTE @TOTALCOUNT = SPRETURNSTUDENTCOUNT
+PRINT @TOTALCOUNT
+
+
+CREATE PROCEDURE SPSTUDENTID4
+@ID INT
+AS
+BEGIN
+RETURN (SELECT NAME FROM STUDENT WHERE ID = @ID)
+END
+
+DECLARE @NAME2 VARCHAR(50)
+EXECUTE @NAME2 = SPSTUDENTID4 4
+PRINT 'NAME OF THE EMPLOYEE = ' + @NAME2
+
+CREATE PROCEDURE SPSTUDENTNAME4
+@ID INT,
+@NAME VARCHAR(20) OUTPUT
+AS 
+BEGIN
+SELECT @NAME = NAME FROM STUDENT WHERE ID =@ID;
+END
+
+DECLARE @NAME1 VARCHAR(20)
+EXECUTE SPSTUDENTNAME4 3, @NAME1 OUT
+PRINT 'NAME =  '+ @NAME1
+
+SELECT * FROM STUDENT
+
